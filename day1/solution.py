@@ -18,11 +18,14 @@ class Solution(Day):
         return sum([int(v) for v in self.data.splitlines()])
 
     def part2(self):
+        data = self.data.splitlines()
+
         results = set()
         v = 0
         results.add(0)
+
         while True:
-            for s in self.data.splitlines():
+            for s in data:
                 v += int(s)
                 if v in results:
                     return v

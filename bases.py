@@ -15,7 +15,7 @@ class Day(ABC):
         import importlib
         modname = '.'.join(type(self).__module__.split('.')[:-1])
         path = importlib.import_module(modname).__path__._path[0]
-        self.data = open("{}/input.txt".format(path), "r").read()
+        self.data = open("{}/input.txt".format(path), "r").read().strip()
 
     @abstractmethod
     def part1(self):
