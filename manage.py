@@ -31,8 +31,7 @@ def load(day: int, load_data: bool = True) -> Union[bool, Day]:
 def parse(args):
     if len(args) == 0:
         import datetime
-        # args = str(datetime.date.today().day)
-        args = "1"
+        args = str(datetime.date.today().day)
 
     if args[0] == 'all':
         import importlib
