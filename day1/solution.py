@@ -15,10 +15,10 @@ class Solution(Day):
     ]
 
     def part1(self):
-        return sum([int(v) for v in self.data.splitlines()])
+        return sum(map(int, self.data.splitlines()))
 
     def part2(self):
-        data = self.data.splitlines()
+        data = list(map(int, self.data.splitlines()))
 
         results = set()
         v = 0
@@ -26,7 +26,7 @@ class Solution(Day):
 
         while True:
             for s in data:
-                v += int(s)
+                v += s
                 if v in results:
                     return v
                 results.add(v)
