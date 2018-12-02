@@ -1,5 +1,10 @@
 import itertools
 
+from collections import Counter
+
+import functools
+import operator
+
 from bases import Day
 
 
@@ -24,21 +29,12 @@ class Solution(Day):
     )]
 
     def part1(self):
-        counts2 = 0
-        counts3 = 0
-        for current in self.data.splitlines():
-            letters = {}
-            for letter in current:
-                if letter in letters:
-                    letters[letter] += 1
-                else:
-                    letters[letter] = 1
-            if 2 in letters.values():
-                counts2 += 1
-            if 3 in letters.values():
-                counts3 += 1
-
-        return counts2 * counts3
+        return functools.reduce(
+            operator.mul,
+            map(sum, zip(*[
+                (1 if 2 in letters.values() else 0, 1 if 3 in letters.values() else 0)
+                for current in self.data.splitlines()
+                for letters in [Counter(current)]])))
 
     def part2(self):
         for a, b in itertools.combinations(map(str.strip, self.data.splitlines()), 2):
