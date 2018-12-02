@@ -1,3 +1,5 @@
+import os
+
 from abc import ABC, abstractmethod
 from unittest import TestCase
 
@@ -12,9 +14,7 @@ class Day(ABC):
         if not load_data:
             return
 
-        import importlib
-        modname = '.'.join(type(self).__module__.split('.')[:-1])
-        path = importlib.import_module(modname).__path__._path[0]
+        path = os.path.join(*type(self).__module__.split('.')[:-1])
         self.data = open("{}/input.txt".format(path), "r").read().strip()
 
     @abstractmethod
