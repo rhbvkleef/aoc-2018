@@ -7,6 +7,7 @@ import sys
 import unittest
 
 import importlib
+import re
 import requests
 import timeit
 from distutils.dir_util import copy_tree
@@ -17,6 +18,15 @@ from typing import Tuple, Union, List
 
 import config
 from bases import Day, DayTest
+
+
+class TextTestResultWithSuccesses(unittest.TextTestResult):
+    def __init__(self, *args, **kwargs):
+        super(TextTestResultWithSuccesses, self).__init__(*args, **kwargs)
+        self.successes = []
+    def addSuccess(self, test):
+        super(TextTestResultWithSuccesses, self).addSuccess(test)
+        self.successes.append(test)
 
 
 def is_day_created(day):
@@ -48,11 +58,11 @@ def parse(args):
     else:
         days = {}
         for d in args:
-            split = d.split('.')[0]
+            split = d.split('.')
             if len(split) == 1:
                 days[split[0]] = (1, 2)
             elif len(split) == 2:
-                days[split[0]] = days[split[0]] + int(split[1])
+                days[split[0]] = days.get(split[0], ()) + (int(split[1]), )
         return days
 
 
@@ -94,7 +104,7 @@ def run(day: int, puzzles: Tuple[int, int] = (1, 2), notfound_errors=True):
 
 def new(day: int, show_error=True):
     cwd = os.path.dirname(__file__)
-    src = os.path.join(cwd, "day_template")
+    src = os.path.join(cwd, "template")
     dst = os.path.join(cwd, "day{}".format(day))
 
     if os.path.isdir(dst):
@@ -128,36 +138,36 @@ def get_tests(day: int, puzzles: Tuple[int, int] = (1, 2))\
     solution = load(day, load_data=False)
 
     tests = []
-    for p in puzzles:
-        tests.append(DayTest('test_part{}'.format(p), solution=solution))
+    for p in (1, 2):
+        if solution:
+            tests.append(DayTest('test_part{}'.format(p),
+                                 solution=solution, puzzles=puzzles))
+        else:
+            tests.append(DayTest('test_part{}'.format(p),
+                                 solution=solution, puzzles=()))
 
     return tests
 
 
 def run_tests(tests):
-    runner = unittest.TextTestRunner(stream=sys.stdout)
+    runner = unittest.TextTestRunner(stream=sys.stdout, resultclass=TextTestResultWithSuccesses)
     suite = unittest.TestSuite()
 
-    for day, puzzles in tests.items():
-        suite.addTests(get_tests(day, puzzles))
+    for day in range(1, 26):
+        suite.addTests(get_tests(day, tests.get(day, ())))
 
     result = runner.run(suite)
 
-    successes = (1, 2)
+    passed = {}
 
-    for err in result.failures:
-        if '1' in err[0]._testMethodName:
-            if 2 in successes:
-                successes = (2, )
-            else:
-                successes = ()
-        elif '2' in err[0]._testMethodName:
-            if 1 in successes:
-                successes = (1, )
-            else:
-                successes = ()
+    for test in result.successes:
+        a = int(re.match(r'day([0-9]+).solution', test.solution.__module__).group(1))
+        if '1' in test._testMethodName:
+            passed[a] = passed.get(a, ()) + (1,)
+        elif '2' in test._testMethodName:
+            passed[a] = passed.get(a, ()) + (2,)
 
-    return successes
+    return passed
 
 
 def main():
@@ -166,19 +176,23 @@ def main():
 
     if sys.argv[1] in ('run-or-create', 'run-or-new',
                        'execute-or-create', 'execute-or-new', 'auto'):
-        for day, puzzles in parse(sys.argv[2:]).items():
-            if is_day_created(day):
-                successes = run_tests({day: puzzles})
-                run(day, successes)
-            else:
-                # noinspection PyBroadException
-                try:
-                    new(day)
-                except ConnectionError as e:
-                    print(e, file=sys.stderr)
-                except Exception:
-                    traceback.print_exc()
-        exit(0)
+        should_execute = {int(day): puzzles for day, puzzles in parse(sys.argv[2:]).items() if is_day_created(day)}
+        should_create = [day for day, _ in parse(sys.argv[2:]).items() if not is_day_created(day)]
+
+        for day in should_create:
+            # noinspection PyBroadException
+            try:
+                new(day)
+            except ConnectionError as e:
+                print(e, file=sys.stderr)
+            except Exception:
+                traceback.print_exc()
+
+        passes = run_tests(should_execute)
+        for day, puzzles in passes.items():
+            run(day, puzzles)
+
+        return
 
     if sys.argv[1] in ('run', 'execute'):
         for day, puzzles in parse(sys.argv[2:]).items():

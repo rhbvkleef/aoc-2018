@@ -33,13 +33,16 @@ class DayTest(TestCase):
     puzzles: Tuple
 
     # noinspection PyPep8Naming
-    def __init__(self, testName, solution):
+    def __init__(self, testName, solution, puzzles=(1, 2)):
         super(DayTest, self).__init__(testName)
         self.solution = solution
+        self.not_skip = puzzles
 
     def test_part1(self):
-        if not hasattr(self.solution, 'examples_1')\
-                or len(self.solution.examples_1) == 0:
+        if 1 not in self.not_skip:
+            self.skipTest('This test is not specified.')
+
+        if not hasattr(self.solution, 'examples_1'):
             self.fail('There are no tests for part 1')
 
         for data, answer in self.solution.examples_1:
@@ -47,8 +50,10 @@ class DayTest(TestCase):
             self.assertEqual(answer, self.solution.part1())
 
     def test_part2(self):
-        if not hasattr(self.solution, 'examples_2')\
-                or len(self.solution.examples_2) == 0:
+        if 2 not in self.not_skip:
+            self.skipTest('This test is not specified.')
+
+        if not hasattr(self.solution, 'examples_2'):
             self.fail('There are no tests for part 2')
 
         for data, answer in self.solution.examples_2:
