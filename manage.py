@@ -223,3 +223,8 @@ class FullTest(unittest.TestSuite):
     def __init__(self):
         super(FullTest, self).__init__(sum([get_tests(day, (1, 2)) for day in range(1, 26)], []))
 
+
+class TestToday(DayTest):
+    def __init__(self, test_name):
+        k, v = list(parse([]).items())[0]
+        super(TestToday, self).__init__(test_name, load(k, load_data=False), puzzles=(1, 2))
