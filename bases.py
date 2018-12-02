@@ -1,3 +1,8 @@
+# Copyright 2018 Rolf van Kleef
+# This library is licensed under the BSD 3-clause license. This means that you
+# are allowed to do almost anything with it. For exact terms, please refer to
+# the attached license file.
+
 import os
 
 from abc import ABC, abstractmethod
@@ -63,4 +68,5 @@ class DayTest(TestCase):
     @staticmethod
     def new(day, solution, puzzle, puzzles):
         cls = type('{}'.format(day), (DayTest, ), {'__module__': 'days'})
-        return cls('test_part{}'.format(puzzle), solution=solution, puzzles=puzzles)
+        return cls('test_part{}'.format(puzzle), solution=solution,
+                   puzzles=puzzles)

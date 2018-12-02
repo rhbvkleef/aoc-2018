@@ -1,6 +1,6 @@
 # Advent of code 2018 in Python
 
-[![License](https://img.shields.io/github/license/rhbvkleef/aoc-2018.svg)](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+[![License](https://img.shields.io/github/license/rhbvkleef/aoc-2018.svg)](https://opensource.org/licenses/BSD-3-Clause)
 ![GitHub top language](https://img.shields.io/github/languages/top/rhbvkleef/aoc-2018.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)
 [![Python 3..6.6](https://img.shields.io/badge/python-3.6.6-blue.svg?logo=python)](https://www.python.org/downloads/release/python-366/)
