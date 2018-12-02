@@ -22,7 +22,9 @@ class Day(ABC):
             return
 
         path = os.path.join(*type(self).__module__.split('.')[:-1])
-        self.data = open("{}/input.txt".format(path), "r").read().strip()
+        file = open("{}/input.txt".format(path), "r")
+        self.data = file.read().strip()
+        file.close()
 
     @abstractmethod
     def part1(self):

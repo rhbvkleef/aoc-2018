@@ -4,7 +4,7 @@
 # This library is licensed under the BSD 3-clause license. This means that you
 # are allowed to do almost anything with it. For exact terms, please refer to
 # the attached license file.
-
+import datetime
 import os
 import sys
 
@@ -51,7 +51,6 @@ def load(day: int, load_data: bool = True) -> Union[bool, Day]:
 
 def parse(args):
     if len(args) == 0:
-        import datetime
         args = str(datetime.date.today().day)
 
     if args[0] == 'all':
@@ -236,3 +235,40 @@ class TestToday(DayTest):
         k, v = list(parse([]).items())[0]
         super(TestToday, self).__init__(test_name, load(k, load_data=False),
                                         puzzles=(1, 2))
+
+
+class AutoToday(unittest.TestSuite):
+    def __init__(self):
+        self.day = datetime.date.today().day
+
+        if not is_day_created(self.day):
+            new(self.day)
+            exit(0)
+
+        super(AutoToday, self).__init__(tests=[
+            TestToday(test_name='test_part1'),
+            TestToday(test_name='test_part2'),
+        ])
+
+    def run(self, result):
+        super(AutoToday, self).run(result)
+
+        passes = (1, 2)
+
+        for failure in result.failures:
+            if '1' in failure._testMethodName:
+                if passes == (1, 2):
+                    passes = (2, )
+                else:
+                    passes = ()
+            elif '2' in failure._testMethodName:
+                if passes == (1, 2):
+                    passes = (1, )
+                else:
+                    passes = ()
+
+        run(self.day, passes)
+        sys.stdout.flush()
+
+        return result
+
