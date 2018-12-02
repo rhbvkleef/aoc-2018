@@ -100,8 +100,14 @@ def new(day: int, show_error=True):
             print("Day {} already created!".format(day))
         return False
 
-    r = requests.get(config.URL.format(day),
-                     allow_redirects=True, cookies={'session': config.SESSION})
+    s = requests.Session()
+    s.cookies.update({'session': config.SESSION})
+    s.headers.update({
+        'X-Email': 'aoc@rolfvankleef.nl',
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) rhbvkleef/aoc-2018',
+    })
+
+    r = s.get(config.URL.format(day), allow_redirects=True)
 
     if not r.ok:
         raise ConnectionError("Failed to download new input file. Status {}."
@@ -144,8 +150,10 @@ def main():
                        'execute-or-create', 'execute-or-new', 'auto'):
         for day, puzzles in parse(sys.argv[2:]).items():
             if is_day_created(day):
-                if run_tests({day: puzzles}):
-                    run(day, puzzles)
+                if 1 in puzzles and run_tests({day: (1,)}):
+                    run(day, (1, ))
+                if 2 in puzzles and run_tests({day: (1, 2)}):
+                    run(day, (2, ))
             else:
                 # noinspection PyBroadException
                 try:
