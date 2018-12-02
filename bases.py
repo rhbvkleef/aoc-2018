@@ -59,3 +59,8 @@ class DayTest(TestCase):
         for data, answer in self.solution.examples_2:
             self.solution.data = data
             self.assertEqual(answer, self.solution.part2())
+
+    @staticmethod
+    def new(day, solution, puzzle, puzzles):
+        cls = type('{}'.format(day), (DayTest, ), {'__module__': 'days'})
+        return cls('test_part{}'.format(puzzle), solution=solution, puzzles=puzzles)

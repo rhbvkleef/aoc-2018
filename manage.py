@@ -138,11 +138,13 @@ def get_tests(day: int, puzzles: Tuple[int, int] = (1, 2))\
     tests = []
     for p in (1, 2):
         if solution:
-            tests.append(DayTest('test_part{}'.format(p),
-                                 solution=solution, puzzles=puzzles))
+            tests.append(DayTest.new(day, solution, p, puzzles))
+            # tests.append(DayTest('test_part{}'.format(p),
+            #                      solution=solution, puzzles=puzzles))
         else:
-            tests.append(DayTest('test_part{}'.format(p),
-                                 solution=solution, puzzles=()))
+            tests.append(DayTest.new(day, solution, p, ()))
+            # tests.append(DayTest('test_part{}'.format(p),
+            #                      solution=solution, puzzles=()))
 
     return tests
 
@@ -215,3 +217,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+class FullTest(unittest.TestSuite):
+    def __init__(self):
+        super(FullTest, self).__init__(sum([get_tests(day, (1, 2)) for day in range(1, 26)], []))
+
