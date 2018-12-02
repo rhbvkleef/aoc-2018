@@ -6,6 +6,41 @@
 [![Python 3..6.6](https://img.shields.io/badge/python-3.6.6-blue.svg?logo=python)](https://www.python.org/downloads/release/python-366/)
 [![Pipenv](https://img.shields.io/badge/pipenv-%E2%9C%94-brightgreen.svg)](https://pipenv.readthedocs.io/en/latest/)
 
+## Installation
+
+This project requires python 3.6 or higher. It also requires either pipenv
+or pip3.6 or higher.
+
+### Plain pip
+
+```bash
+pip3 install -r requirements.txt
+```
+
+### Pip with virtualenv
+
+Requires `python3.6`+, `pip3.6`+ and `python3-virtualenv`.
+
+Linux/MacOS:
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+Winsux (Some might call it Windows):
+```batch
+virtualenv venv
+venv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+
+### Pipenv
+
+```bash
+pipenv install
+```
+
 ## How to use
 
 This project defines a few commands:
