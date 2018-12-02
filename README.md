@@ -83,7 +83,3 @@ Examples:
 
 Runs new for each given day, when no template exists. If that is not the case,
 it will run unittests, and if they are successful, runs the actual input.
-
-## License
-
-[LGPLv2.1](LICENSE)
