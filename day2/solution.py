@@ -37,7 +37,8 @@ class Solution(Day):
                 for letters in [Counter(current)]])))
 
     def part2(self):
-        for a, b in itertools.combinations(map(str.strip, self.data.splitlines()), 2):
-            intersect = [x for i, x in enumerate(b) if x == a[i]]
-            if len(a) - len(intersect) == 1:
-                return "".join(intersect)
+        return "".join(
+            [result
+             for a, b in itertools.combinations(map(str.strip, self.data.splitlines()), 2)
+             for result in [[x for i, x in enumerate(b) if x == a[i]]]
+             if len(a) - len(result) == 1][0])
