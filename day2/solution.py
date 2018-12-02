@@ -1,3 +1,5 @@
+import itertools
+
 from bases import Day
 
 
@@ -39,20 +41,16 @@ class Solution(Day):
         return counts2 * counts3
 
     def part2(self):
-        import itertools
+        """
+        I found out that this program is able to produce multiple solutions for
+        my given puzzle input. The one it currently returns first is different
+        from the one I entered, so either I am making a mistake, or there are
+        just multiple possible answers.
+
+        :return: A solution
+        """
         for a, b in itertools.combinations(map(str.strip, self.data.splitlines()), 2):
-            ctr = 0
-            res = ""
-            for i, c in enumerate(a):
-                if c != b[i]:
-                    ctr += 1
-                else:
-                    res += c
-
-                if ctr >= 2:
-                    break
-
-            if ctr == 0 or ctr >= 2:
-                continue
-
-            return res
+            set_a = frozenset(a)
+            intersect = [x for x in b if x in set_a]
+            if len(a) - len(intersect) == 1:
+                return "".join(intersect)

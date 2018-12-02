@@ -1,4 +1,6 @@
 #!/usr/sbin/python3
+import itertools
+
 import os
 import sys
 
@@ -139,7 +141,23 @@ def run_tests(tests):
     for day, puzzles in tests.items():
         suite.addTests(get_tests(day, puzzles))
 
-    return runner.run(suite).wasSuccessful()
+    result = runner.run(suite)
+
+    successes = (1, 2)
+
+    for err in result.failures:
+        if '1' in err[0]._testMethodName:
+            if 2 in successes:
+                successes = (2, )
+            else:
+                successes = ()
+        elif '2' in err[0]._testMethodName:
+            if 1 in successes:
+                successes = (1, )
+            else:
+                successes = ()
+
+    return successes
 
 
 def main():
@@ -150,10 +168,8 @@ def main():
                        'execute-or-create', 'execute-or-new', 'auto'):
         for day, puzzles in parse(sys.argv[2:]).items():
             if is_day_created(day):
-                if 1 in puzzles and run_tests({day: (1,)}):
-                    run(day, (1, ))
-                if 2 in puzzles and run_tests({day: (1, 2)}):
-                    run(day, (2, ))
+                successes = run_tests({day: puzzles})
+                run(day, successes)
             else:
                 # noinspection PyBroadException
                 try:
