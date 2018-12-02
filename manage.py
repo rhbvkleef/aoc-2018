@@ -1,6 +1,4 @@
 #!/usr/sbin/python3
-import itertools
-
 import os
 import sys
 
@@ -150,7 +148,9 @@ def get_tests(day: int, puzzles: Tuple[int, int] = (1, 2))\
 
 
 def run_tests(tests):
-    runner = unittest.TextTestRunner(stream=sys.stdout, resultclass=TextTestResultWithSuccesses)
+    # noinspection PyTypeChecker
+    runner = unittest.TextTestRunner(stream=sys.stdout,
+                                     resultclass=TextTestResultWithSuccesses)
     suite = unittest.TestSuite()
 
     for day in range(1, 26):
@@ -160,8 +160,12 @@ def run_tests(tests):
 
     passed = {}
 
+    # noinspection PyUnresolvedReferences
     for test in result.successes:
-        a = int(re.match(r'day([0-9]+).solution', test.solution.__module__).group(1))
+        a = int(re.match(r'day([0-9]+).solution', test.solution.__module__)
+                .group(1))
+
+        # noinspection PyProtectedMember
         if '1' in test._testMethodName:
             passed[a] = passed.get(a, ()) + (1,)
         elif '2' in test._testMethodName:
@@ -176,8 +180,11 @@ def main():
 
     if sys.argv[1] in ('run-or-create', 'run-or-new',
                        'execute-or-create', 'execute-or-new', 'auto'):
-        should_execute = {int(day): puzzles for day, puzzles in parse(sys.argv[2:]).items() if is_day_created(day)}
-        should_create = [day for day, _ in parse(sys.argv[2:]).items() if not is_day_created(day)]
+        should_execute = {int(day): puzzles
+                          for day, puzzles in parse(sys.argv[2:]).items()
+                          if is_day_created(day)}
+        should_create = [day for day, _ in parse(sys.argv[2:]).items()
+                         if not is_day_created(day)]
 
         for day in should_create:
             # noinspection PyBroadException
