@@ -1,17 +1,23 @@
 #!/usr/sbin/python3
+import os
 import sys
 
 import unittest
+
+import importlib
+import requests
+import timeit
+from distutils.dir_util import copy_tree
 from io import StringIO
 
 import traceback
 from typing import Tuple, Union, List
 
+import config
 from bases import Day, DayTest
 
 
 def is_day_created(day):
-    import importlib
     try:
         importlib.import_module("day{}.solution".format(day))
     except ModuleNotFoundError:
@@ -20,10 +26,9 @@ def is_day_created(day):
 
 
 def load(day: int, load_data: bool = True) -> Union[bool, Day]:
-    import importlib
-
     try:
-        return importlib.import_module("day{}.solution".format(day)).Solution(load_data=load_data)
+        return importlib.import_module("day{}.solution".format(day))\
+            .Solution(load_data=load_data)
     except ModuleNotFoundError:
         return False
 
@@ -34,7 +39,6 @@ def parse(args):
         args = str(datetime.date.today().day)
 
     if args[0] == 'all':
-        import importlib
         r = {}
         for day in range(1, 26):
             r[day] = (1, 2)
@@ -51,8 +55,6 @@ def parse(args):
 
 
 def run(day: int, puzzles: Tuple[int, int] = (1, 2), notfound_errors=True):
-    import timeit
-
     solution = load(day)
 
     if not solution:
@@ -70,9 +72,9 @@ def run(day: int, puzzles: Tuple[int, int] = (1, 2), notfound_errors=True):
             end = timeit.default_timer()
         except Exception as e:
             print("    Raised exception: {}".format(e))
-            str = StringIO()
-            traceback.print_exc(file=str)
-            print("      " + ("\n      ".join(str.getvalue().split("\n"))))
+            buffer = StringIO()
+            traceback.print_exc(file=buffer)
+            print("      " + ("\n      ".join(buffer.getvalue().split("\n"))))
         else:
             print("    Solution: {}".format(result))
             print("    Duration: {} ms".format((end-start) * 1000))
@@ -89,11 +91,6 @@ def run(day: int, puzzles: Tuple[int, int] = (1, 2), notfound_errors=True):
 
 
 def new(day: int, show_error=True):
-    from distutils.dir_util import copy_tree
-    import os
-    import requests
-    import config
-
     cwd = os.path.dirname(__file__)
     src = os.path.join(cwd, "day_template")
     dst = os.path.join(cwd, "day{}".format(day))
@@ -103,10 +100,12 @@ def new(day: int, show_error=True):
             print("Day {} already created!".format(day))
         return False
 
-    r = requests.get(config.URL.format(day), allow_redirects=True, cookies={'session': config.SESSION})
+    r = requests.get(config.URL.format(day),
+                     allow_redirects=True, cookies={'session': config.SESSION})
 
     if not r.ok:
-        raise ConnectionError("Failed to download new input file. Status {}.".format(r.status_code))
+        raise ConnectionError("Failed to download new input file. Status {}."
+                              .format(r.status_code))
 
     copy_tree(src, dst)
     open(os.path.join(dst, "input.txt"), 'wb').write(r.content)
@@ -116,7 +115,8 @@ def new(day: int, show_error=True):
     return True
 
 
-def get_tests(day: int, puzzles: Tuple[int, int] = (1, 2)) -> List[unittest.TestCase]:
+def get_tests(day: int, puzzles: Tuple[int, int] = (1, 2))\
+        -> List[unittest.TestCase]:
     solution = load(day, load_data=False)
 
     tests = []
@@ -136,21 +136,23 @@ def run_tests(tests):
     return runner.run(suite).wasSuccessful()
 
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) < 2:
         exit(1)
 
-    if sys.argv[1] in ('run-or-create', 'run-or-new', 'execute-or-create', 'execute-or-new', 'auto'):
+    if sys.argv[1] in ('run-or-create', 'run-or-new',
+                       'execute-or-create', 'execute-or-new', 'auto'):
         for day, puzzles in parse(sys.argv[2:]).items():
             if is_day_created(day):
                 if run_tests({day: puzzles}):
                     run(day, puzzles)
             else:
+                # noinspection PyBroadException
                 try:
                     new(day)
                 except ConnectionError as e:
                     print(e, file=sys.stderr)
-                except Exception as e:
+                except Exception:
                     traceback.print_exc()
         exit(0)
 
@@ -164,3 +166,7 @@ if __name__ == '__main__':
         run_tests(parse(sys.argv[2:]))
     else:
         print('Valid commands are: (run|execute) and (new|create)')
+
+
+if __name__ == '__main__':
+    main()

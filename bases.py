@@ -3,12 +3,14 @@ import os
 from abc import ABC, abstractmethod
 from unittest import TestCase
 
-from typing import Tuple
+from typing import Tuple, Any, List
 
 
 class Day(ABC):
 
     data: str
+    examples_1: List[Tuple[str, Any]]
+    examples_2: List[Tuple[str, Any]]
 
     def __init__(self, load_data=True):
         if not load_data:
@@ -30,6 +32,7 @@ class DayTest(TestCase):
     solution: Day
     puzzles: Tuple
 
+    # noinspection PyPep8Naming
     def __init__(self, testName, solution):
         super(DayTest, self).__init__(testName)
         self.solution = solution
@@ -39,8 +42,8 @@ class DayTest(TestCase):
                 or len(self.solution.examples_1) == 0:
             self.fail('There are no tests for part 1')
 
-        for input, answer in self.solution.examples_1:
-            self.solution.data = input
+        for data, answer in self.solution.examples_1:
+            self.solution.data = data
             self.assertEqual(answer, self.solution.part1())
 
     def test_part2(self):
@@ -48,6 +51,6 @@ class DayTest(TestCase):
                 or len(self.solution.examples_2) == 0:
             self.fail('There are no tests for part 2')
 
-        for input, answer in self.solution.examples_2:
-            self.solution.data = input
+        for data, answer in self.solution.examples_2:
+            self.solution.data = data
             self.assertEqual(answer, self.solution.part2())
