@@ -52,6 +52,9 @@ class DayTest(TestCase):
         if not hasattr(self.solution, 'examples_1'):
             self.fail('There are no tests for part 1')
 
+        if len(self.solution.examples_1) <= 0:
+            self.skipTest('No tests are provided.')
+
         for data, answer in self.solution.examples_1:
             self.solution.data = data
             self.assertEqual(answer, self.solution.part1())
@@ -62,6 +65,9 @@ class DayTest(TestCase):
 
         if not hasattr(self.solution, 'examples_2'):
             self.fail('There are no tests for part 2')
+
+        if len(self.solution.examples_2) <= 0:
+            self.skipTest('No tests are provided.')
 
         for data, answer in self.solution.examples_2:
             self.solution.data = data

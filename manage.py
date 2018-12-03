@@ -255,7 +255,7 @@ class AutoToday(unittest.TestSuite):
 
         passes = (1, 2)
 
-        for failure in result.failures:
+        for failure in result.failures + result.skipped:
             if '1' in failure._testMethodName:
                 if passes == (1, 2):
                     passes = (2, )
@@ -267,6 +267,7 @@ class AutoToday(unittest.TestSuite):
                 else:
                     passes = ()
 
+        print()
         run(self.day, passes)
         sys.stdout.flush()
 
