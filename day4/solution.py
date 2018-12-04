@@ -71,6 +71,6 @@ class Solution(Day):
     def part2(self):
         guards = self.accumulate()
 
-        guard = max(list(map(lambda it: (it[0], max(Counter(it[1]).items(), key=lambda a: a[1])), guards.items())), key=lambda a: a[1][1])
+        guard = max(map(lambda it: (it[0], max(Counter(it[1]).items(), key=lambda a: a[1])), guards.items()), key=lambda a: a[1][1])
 
         return guard[0] * guard[1][0]
