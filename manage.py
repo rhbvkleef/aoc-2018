@@ -74,11 +74,11 @@ def run(day: int, puzzles: Tuple[int, int] = (1, 2), notfound_errors=True):
 
     if not solution:
         if notfound_errors:
-            print("Day {}:".format(day))
-            print("  Not found!")
+            print("Day {}:".format(day), file=sys.stderr)
+            print("  Not found!", file=sys.stderr)
         return False
     else:
-        print("Day {}:".format(day))
+        print("Day {}:".format(day), file=sys.stderr)
 
     def run_case(func):
         try:
@@ -86,20 +86,20 @@ def run(day: int, puzzles: Tuple[int, int] = (1, 2), notfound_errors=True):
             result = func()
             end = timeit.default_timer()
         except Exception as e:
-            print("    Raised exception: {}".format(e))
+            print("    Raised exception: {}".format(e), file=sys.stderr)
             buffer = StringIO()
             traceback.print_exc(file=buffer)
-            print("      " + ("\n      ".join(buffer.getvalue().split("\n"))))
+            print("      " + ("\n      ".join(buffer.getvalue().split("\n"))), file=sys.stderr)
         else:
-            print("    Solution: {}".format(result))
-            print("    Duration: {} ms".format((end-start) * 1000))
+            print("    Solution: {}".format(result), file=sys.stderr)
+            print("    Duration: {} ms".format((end-start) * 1000), file=sys.stderr)
 
     if 1 in puzzles:
-        print("  Part 1:")
+        print("  Part 1:", file=sys.stderr)
         run_case(solution.part1)
 
     if 2 in puzzles:
-        print("  Part 2:")
+        print("  Part 2:", file=sys.stderr)
         run_case(solution.part2)
 
     return True
@@ -112,7 +112,7 @@ def new(day: int, show_error=True):
 
     if os.path.isdir(dst):
         if show_error:
-            print("Day {} already created!".format(day))
+            print("Day {} already created!".format(day), file=sys.stderr)
         return False
 
     s = requests.Session()
@@ -131,7 +131,7 @@ def new(day: int, show_error=True):
     copy_tree(src, dst)
     open(os.path.join(dst, "input.txt"), 'wb').write(r.content)
 
-    print("Created template for day {}".format(day))
+    print("Created template for day {}".format(day), file=sys.stderr)
 
     return True
 
@@ -144,12 +144,8 @@ def get_tests(day: int, puzzles: Tuple[int, int] = (1, 2))\
     for p in (1, 2):
         if solution:
             tests.append(DayTest.new(day, solution, p, puzzles))
-            # tests.append(DayTest('test_part{}'.format(p),
-            #                      solution=solution, puzzles=puzzles))
         else:
             tests.append(DayTest.new(day, solution, p, ()))
-            # tests.append(DayTest('test_part{}'.format(p),
-            #                      solution=solution, puzzles=()))
 
     return tests
 
@@ -217,7 +213,7 @@ def main():
     elif sys.argv[1] in ('test', ):
         run_tests(parse(sys.argv[2:]))
     else:
-        print('Valid commands are: (run|execute) and (new|create)')
+        print('Valid commands are: (run|execute) and (new|create)', file=sys.stderr)
 
 
 if __name__ == '__main__':
