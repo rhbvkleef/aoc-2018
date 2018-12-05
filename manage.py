@@ -178,8 +178,8 @@ def run_tests(tests):
 
 
 def main():
-    if len(sys.argv) < 2:
-        exit(1)
+    if sys.argv[1] == 'manage':
+        sys.argv.pop(0)
 
     if sys.argv[1] in ('run-or-create', 'run-or-new',
                        'execute-or-create', 'execute-or-new', 'auto'):
@@ -214,6 +214,7 @@ def main():
         run_tests(parse(sys.argv[2:]))
     else:
         print('Valid commands are: (run|execute) and (new|create)', file=sys.stderr)
+        print('You entered "{}"'.format(' '.join(sys.argv[1:])), file=sys.stderr)
 
 
 if __name__ == '__main__':
