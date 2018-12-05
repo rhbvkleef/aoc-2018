@@ -252,12 +252,12 @@ class AutoToday(unittest.TestSuite):
         passes = (1, 2)
 
         for failure in result.failures:
-            if '1' in failure._testMethodName:
+            if '1' in failure[0]._testMethodName:
                 if passes == (1, 2):
                     passes = (2, )
                 else:
                     passes = ()
-            elif '2' in failure._testMethodName:
+            elif '2' in failure[0]._testMethodName:
                 if passes == (1, 2):
                     passes = (1, )
                 else:
