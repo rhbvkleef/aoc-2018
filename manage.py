@@ -25,11 +25,11 @@ from teamcity.unittestpy import TeamcityTestRunner, TeamcityTestResult
 import config
 from bases import Day, DayTest
 
+use_teamcity = 'TEAMCITY' in os.environ
+TestRunner = TeamcityTestRunner if use_teamcity else unittest.TextTestRunner
 
-TestRunner = TeamcityTestRunner if os.environ['TEAMCITY'] else unittest.TextTestRunner
 
-
-class TextTestResultWithSuccesses(TeamcityTestResult if os.environ['TEAMCITY'] else unittest.TextTestResult):
+class TextTestResultWithSuccesses(TeamcityTestResult if use_teamcity else unittest.TextTestResult):
     def __init__(self, *args, **kwargs):
         super(TextTestResultWithSuccesses, self).__init__(*args, **kwargs)
         self.successes = []
