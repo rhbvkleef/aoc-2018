@@ -20,7 +20,7 @@ from io import StringIO
 import traceback
 from typing import Tuple, Union, List
 
-from teamcity.unittestpy import TeamcityTestRunner
+from teamcity.unittestpy import TeamcityTestRunner, TeamcityTestResult
 
 import config
 from bases import Day, DayTest
@@ -29,7 +29,7 @@ from bases import Day, DayTest
 TestRunner = TeamcityTestRunner if os.environ['TEAMCITY'] else unittest.TextTestRunner
 
 
-class TextTestResultWithSuccesses(unittest.TextTestResult):
+class TextTestResultWithSuccesses(TeamcityTestResult if os.environ['TEAMCITY'] else unittest.TextTestResult):
     def __init__(self, *args, **kwargs):
         super(TextTestResultWithSuccesses, self).__init__(*args, **kwargs)
         self.successes = []
