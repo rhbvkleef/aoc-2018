@@ -20,14 +20,13 @@ from io import StringIO
 import traceback
 from typing import Tuple, Union, List
 
-from teamcity import is_running_under_teamcity
 from teamcity.unittestpy import TeamcityTestRunner
 
 import config
 from bases import Day, DayTest
 
 
-TestRunner = TeamcityTestRunner if is_running_under_teamcity() else unittest.TextTestRunner
+TestRunner = TeamcityTestRunner if os.environ['TEAMCITY'] else unittest.TextTestRunner
 
 
 class TextTestResultWithSuccesses(unittest.TextTestResult):
