@@ -2,6 +2,8 @@
 # This library is licensed under the BSD 3-clause license. This means that you
 # are allowed to do almost anything with it. For exact terms, please refer to
 # the attached license file.
+from functools import partial
+
 from bases import Day
 
 
@@ -11,30 +13,21 @@ class Solution(Day):
 
     @staticmethod
     def remove(data, character):
-        curr_len = len(data)
-        curr_chars = []
+        num_removed = 0
+        char_history = []
         for i in data:
             if i.lower() == chr(ord('a') + character):
-                curr_len -= 1
-            elif len(curr_chars) > 0 and i.isupper() and i.lower() == curr_chars[-1]:
-                curr_chars.pop()
-                curr_len -= 2
-            elif len(curr_chars) > 0 and i.islower() and i.upper() == curr_chars[-1]:
-                curr_chars.pop()
-                curr_len -= 2
+                num_removed += 1
+            elif len(char_history) > 0 and i != char_history[-1] and i.lower() == char_history[-1].lower():
+                char_history.pop()
+                num_removed += 2
             else:
-                curr_chars.append(i)
+                char_history.append(i)
 
-        return curr_len
+        return len(data) - num_removed
 
     def part1(self):
         return Solution.remove(self.data, -40)
 
     def part2(self):
-        data = self.data
-        best = len(data)
-
-        for c in range(0, 26):
-            best = min(Solution.remove(self.data, c), best)
-
-        return best
+        return min(map(partial(Solution.remove, self.data), range(0, 26)))
