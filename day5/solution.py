@@ -18,7 +18,7 @@ class Solution(Day):
         for i in data:
             if i.lower() == chr(ord('a') + character):
                 num_removed += 1
-            elif len(char_history) > 0 and i != char_history[-1] and i.lower() == char_history[-1].lower():
+            elif len(char_history) > 0 and i.swapcase() == char_history[-1]:
                 char_history.pop()
                 num_removed += 2
             else:
