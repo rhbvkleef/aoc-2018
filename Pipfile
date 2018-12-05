@@ -9,6 +9,7 @@ coverage = "*"
 
 [dev-packages]
 teamcity-messages = "*"
+coverage-badge = "*"
 
 [requires]
 python_version = "3.6.6"
