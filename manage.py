@@ -20,8 +20,14 @@ from io import StringIO
 import traceback
 from typing import Tuple, Union, List
 
+from teamcity import is_running_under_teamcity
+from teamcity.unittestpy import TeamcityTestRunner
+
 import config
 from bases import Day, DayTest
+
+
+TestRunner = TeamcityTestRunner if is_running_under_teamcity() else unittest.TextTestRunner
 
 
 class TextTestResultWithSuccesses(unittest.TextTestResult):
@@ -63,9 +69,9 @@ def parse(args):
         for d in args:
             split = d.split('.')
             if len(split) == 1:
-                days[split[0]] = (1, 2)
+                days[int(split[0])] = (1, 2)
             elif len(split) == 2:
-                days[split[0]] = days.get(split[0], ()) + (int(split[1]), )
+                days[int(split[0])] = days.get(int(split[0]), ()) + (int(split[1]), )
         return days
 
 
@@ -152,8 +158,8 @@ def get_tests(day: int, puzzles: Tuple[int, int] = (1, 2))\
 
 def run_tests(tests):
     # noinspection PyTypeChecker
-    runner = unittest.TextTestRunner(stream=sys.stdout,
-                                     resultclass=TextTestResultWithSuccesses)
+    runner = TestRunner(stream=sys.stdout,
+                        resultclass=TextTestResultWithSuccesses)
     suite = unittest.TestSuite()
 
     for day in range(1, 26):
@@ -178,15 +184,15 @@ def run_tests(tests):
 
 
 def main():
-    if sys.argv[1] == 'manage':
+    if sys.argv[0] in ('manage', 'manage.py'):
         sys.argv.pop(0)
 
-    if sys.argv[1] in ('run-or-create', 'run-or-new',
+    if sys.argv[0] in ('run-or-create', 'run-or-new',
                        'execute-or-create', 'execute-or-new', 'auto'):
         should_execute = {int(day): puzzles
-                          for day, puzzles in parse(sys.argv[2:]).items()
+                          for day, puzzles in parse(sys.argv[1:]).items()
                           if is_day_created(day)}
-        should_create = [day for day, _ in parse(sys.argv[2:]).items()
+        should_create = [day for day, _ in parse(sys.argv[1:]).items()
                          if not is_day_created(day)]
 
         for day in should_create:
@@ -204,14 +210,14 @@ def main():
 
         return
 
-    if sys.argv[1] in ('run', 'execute'):
-        for day, puzzles in parse(sys.argv[2:]).items():
+    if sys.argv[0] in ('run', 'execute'):
+        for day, puzzles in parse(sys.argv[1:]).items():
             run(day, puzzles)
-    elif sys.argv[1] in ('new', 'create'):
-        for day, puzzles in parse(sys.argv[2:]).items():
+    elif sys.argv[0] in ('new', 'create'):
+        for day, puzzles in parse(sys.argv[1:]).items():
             new(day)
-    elif sys.argv[1] in ('test', ):
-        run_tests(parse(sys.argv[2:]))
+    elif sys.argv[0] in ('test', ):
+        run_tests(parse(sys.argv[1:]))
     else:
         print('Valid commands are: (run|execute) and (new|create)', file=sys.stderr)
         print('You entered "{}"'.format(' '.join(sys.argv[1:])), file=sys.stderr)
@@ -247,7 +253,7 @@ class AutoToday(unittest.TestSuite):
             TestToday(test_name='test_part2'),
         ])
 
-    def run(self, result):
+    def run(self, result, debug=False):
         super(AutoToday, self).run(result)
 
         passes = (1, 2)

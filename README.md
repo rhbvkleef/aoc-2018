@@ -6,6 +6,7 @@
 [![Python 3..6.6](https://img.shields.io/badge/python-3.6.6-blue.svg?logo=python)](https://www.python.org/downloads/release/python-366/)
 [![Pipenv](https://img.shields.io/badge/pipenv-%E2%9C%94-brightgreen.svg)](https://pipenv.readthedocs.io/en/latest/)
 [![Advent of code](https://img.shields.io/badge/advent%20of%20code-2018-brightgreen.svg)](https://adventofcode.com/2018)
+[![Build Status](https://img.shields.io/teamcity/https/ci.vankleef.me/s/AdventOfCode2018_Build.svg?style=flat)](https://ci.vankleef.me/viewType.html?buildTypeId=AdventOfCode2018_Build&guest=1)
 
 ## Installation
 

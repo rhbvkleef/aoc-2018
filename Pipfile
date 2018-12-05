@@ -8,6 +8,7 @@ requests = "*"
 coverage = "*"
 
 [dev-packages]
+teamcity-messages = "*"
 
 [requires]
 python_version = "3.6.6"
