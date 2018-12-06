@@ -6,17 +6,17 @@ from collections import defaultdict
 
 from bases import Day
 
-import itertools
+from itertools import product, takewhile
 
 
 def partial(func, *args, **keywords):
     """
     Had to add this replacement partial implementation because
     python's standard one is shit.
-    :param func:
-    :param args:
-    :param keywords:
-    :return:
+    :param func: The function to partially fill
+    :param args: Args to fill
+    :param keywords: Keywords to fill
+    :return: Function with given args and keywords filled.
     """
     def newfunc(*fargs, **fkeywords):
         newkeywords = keywords.copy()
@@ -25,7 +25,7 @@ def partial(func, *args, **keywords):
 
     newfunc.func = func
     args = iter(args)
-    newfunc.leftmost_args = tuple(itertools.takewhile(lambda v: v != Ellipsis, args))
+    newfunc.leftmost_args = tuple(takewhile(lambda v: v != Ellipsis, args))
     newfunc.rightmost_args = tuple(args)
     newfunc.keywords = keywords
     return newfunc
@@ -60,25 +60,24 @@ class Solution(Day):
         maxx = max(self.points, key=lambda x: x[0])[0]
         maxy = max(self.points, key=lambda x: x[1])[1]
 
-        self.grid = [[0] * (maxy + 1) for x in range(maxx + 1)]
+        self.grid = [[0] * (maxy + 1) for _x in range(maxx + 1)]
         regions = defaultdict(int)
 
-        for x in range(maxx + 1):
-            for y in range(maxy + 1):
-                best = maxx + maxy
-                best_group = -1
+        for x, y in product(range(maxx + 1), range(maxy + 1)):
+            best = maxx + maxy
+            best_group = -1
 
-                for i, point in enumerate(self.points):
-                    dist = abs(x - point[0]) + abs(y - point[1])
+            for i, point in enumerate(self.points):
+                dist = abs(x - point[0]) + abs(y - point[1])
 
-                    if dist < best:
-                        best = dist
-                        best_group = i
-                    elif dist == best:
-                        best_group = -1
+                if dist < best:
+                    best = dist
+                    best_group = i
+                elif dist == best:
+                    best_group = -1
 
-                self.grid[x][y] = best_group
-                regions[best_group] += 1
+            self.grid[x][y] = best_group
+            regions[best_group] += 1
 
         for line in self.grid:
             if line[0] in regions:
