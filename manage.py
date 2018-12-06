@@ -88,7 +88,7 @@ def run(day: int, puzzles: Tuple[int, int] = (1, 2), notfound_errors=True):
     def run_case(func):
         try:
             start = timeit.default_timer()
-            result = func()
+            result = func(istest=False)
             end = timeit.default_timer()
         except Exception as e:
             print("    Raised exception: {}".format(e), file=sys.stderr)

@@ -61,14 +61,14 @@ class Solution(Day):
                 guard = int(beginShift.search(line[1]).group('id'))
         return guards
 
-    def part1(self):
+    def part1(self, istest=False):
         guards = self.accumulate()
 
         m = max(guards.items(), key=lambda g: len(g[1]))
 
         return m[0] * max(set(m[1]), key=m[1].count)
 
-    def part2(self):
+    def part2(self, istest=False):
         guards = self.accumulate()
 
         guard = max(map(lambda it: (it[0], max(Counter(it[1]).items(), key=lambda a: a[1])), guards.items()), key=lambda a: a[1][1])

@@ -10,8 +10,8 @@ class Solution(Day):
     examples_1 = []
     examples_2 = []
 
-    def part1(self):
+    def part1(self, istest=False):
         pass
 
-    def part2(self):
+    def part2(self, istest=False):
         pass

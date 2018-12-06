@@ -57,7 +57,7 @@ class DayTest(TestCase):
 
         for data, answer in self.solution.examples_1:
             self.solution.data = data
-            self.assertEqual(answer, self.solution.part1())
+            self.assertEqual(answer, self.solution.part1(istest=True))
 
     def test_part2(self):
         if 2 not in self.not_skip:
@@ -71,7 +71,7 @@ class DayTest(TestCase):
 
         for data, answer in self.solution.examples_2:
             self.solution.data = data
-            self.assertEqual(answer, self.solution.part2())
+            self.assertEqual(answer, self.solution.part2(istest=True))
 
     @staticmethod
     def new(day, solution, puzzle, puzzles):

@@ -26,8 +26,8 @@ class Solution(Day):
 
         return len(data) - num_removed
 
-    def part1(self):
+    def part1(self, istest=False):
         return Solution.remove(self.data, -40)
 
-    def part2(self):
+    def part2(self, istest=False):
         return min(map(partial(Solution.remove, self.data), range(0, 26)))

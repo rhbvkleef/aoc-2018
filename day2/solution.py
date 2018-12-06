@@ -33,7 +33,7 @@ class Solution(Day):
         wvxyz""", "fgij"
     )]
 
-    def part1(self):
+    def part1(self, istest=False):
         return functools.reduce(
             operator.mul,
             map(sum, zip(*[
@@ -42,7 +42,7 @@ class Solution(Day):
                 for current in self.data.splitlines()
                 for letters in [Counter(current)]])))
 
-    def part2(self):
+    def part2(self, istest=False):
         return "".join(
             [result
              for a, b in itertools.combinations(map(str.strip,

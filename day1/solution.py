@@ -19,10 +19,10 @@ class Solution(Day):
         ('\n'.join("+7, +7, -2, -7, -4".split(', ')), 14),
     ]
 
-    def part1(self):
+    def part1(self, istest=False):
         return sum(map(int, self.data.splitlines()))
 
-    def part2(self):
+    def part2(self, istest=False):
         data = list(map(int, self.data.splitlines()))
 
         results = set()

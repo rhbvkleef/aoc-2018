@@ -43,7 +43,7 @@ class Solution(Day):
 
         return list(itertools.product(list1, list2))
 
-    def part1(self):
+    def part1(self, istest=False):
         squares = self.parse()
         intersects = 0
         for i, square in enumerate(squares):
@@ -55,7 +55,7 @@ class Solution(Day):
 
         return intersects
 
-    def part2(self):
+    def part2(self, istest=False):
         squares = self.parse()
         for i, square in enumerate(squares):
             if sum(map(len, [Solution.squares_intersect(square, sq) for sq in squares if sq != square])) == 0:
