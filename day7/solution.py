@@ -59,26 +59,22 @@ Step F must be finished before step E can begin.""", 15)]
             deps[dependent]['dependencies'].append(dependency)
             deps[dependency]['dependents'].append(dependent)
 
-        order = ""
-
-        current = (0, [])
         jobs = defaultdict(list)
-        jobs[0] = {'dependencies': [], 'dependents': []}
+        jobs[0] = []
 
-        while len(current[1]) > 0 or current[0] == 0:
+        while len(jobs) > 0:
             current = min(jobs.items())
-            for job in current[1]['dependencies']:
-                for dep in job[1]:
-                    deps[dep]['dependents'].remove(job[0])
-                workers += 1
+            for finished in current[1]:
+                for job in finished[1]['dependencies']:
+                    deps[job]['dependents'].remove(finished[0])
+            workers += len(current[1])
 
             available = [dep for dep in deps.items() if len(dep[1]['dependents']) == 0][::]
             while workers > 0 and len(available) > 0:
                 d = sorted(available, key=lambda i: -ord(i[0]))[0]
-                print(d)
                 available.remove(d)
                 del deps[d[0]]
-                jobs[d_fun(d[0]) + current[0]] += d
+                jobs[d_fun(d[0]) + current[0]] += [d]
                 workers -= 1
 
             del jobs[current[0]]
