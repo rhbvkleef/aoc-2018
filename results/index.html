@@ -16,7 +16,7 @@
             <table class="card-body table table-hover table-light">
                 <thead>
                     <tr>
-                        <th>Day</th><th>Part 1</th><th>Part 2</th>
+                        <th>Day</th><th></th><th>Part 1</th><th>Part 2</th>
                     </tr>
                 </thead>
                 <tbody id="answers">
@@ -66,6 +66,12 @@
             	var hdr = document.createElement("th");
             	hdr.appendChild(document.createTextNode(i));
             	el.appendChild(hdr);
+            	var raw = document.createElement("td");
+            	var a_raw = document.createElement("a");
+            	a_raw.href = 'https://raw.githubusercontent.com/rhbvkleef/aoc-2018/master/day' + i + '/input.txt';
+            	a_raw.appendChild(document.createTextNode("Input"));
+            	raw.appendChild(a_raw);
+            	el.appendChild(raw);
             	var p1 = document.createElement("td");
             	p1.appendChild(document.createTextNode(r["1"]));
             	el.appendChild(p1);
