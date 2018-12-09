@@ -6,3 +6,4 @@ config.py
 .coverage
 htmlcov
 coverage.xml
+answers.json
