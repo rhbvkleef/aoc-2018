@@ -44,6 +44,17 @@ pip install -r requirements.txt
 pipenv install
 ```
 
+## Build information
+
+This project is automatically built by my
+[TeamCity](https://www.jetbrains.com/teamcity/) CI server. That means that all
+test results and run results are available online.
+
+* [General information](https://teamcity.vankleef.me/viewLog.html?buildId=lastSuccessful&buildTypeId=AdventOfCode2018_Build&branch=%3Cdefault%3E&guest=1)
+* [Test breakdown](https://teamcity.vankleef.me/viewLog.html?buildId=348&buildTypeId=AdventOfCode2018_Build&tab=testsInfo&branch_AdventOfCode2018=%3Cdefault%3E&guest=1)
+* [Coverage](https://teamcity.vankleef.me/repository/download/AdventOfCode2018_Build/.lastSuccessful/htmlcov/index.html?guest=1&branch=master)
+* [Answers](https://teamcity.vankleef.me/repository/download/AdventOfCode2018_Build/.lastSuccessful/results/index.html?guest=1&branch=master)
+
 ## How to use
 
 This project defines a few commands:
