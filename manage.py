@@ -213,7 +213,7 @@ def main():
         for day, puzzles in passes.items():
             results[str(day)] = run(day, puzzles)
 
-        f = open('answers.json', 'x')
+        f = open('answers.json', 'w')
         f.write(json.dumps(results))
         f.close()
 
@@ -224,7 +224,7 @@ def main():
         for day, puzzles in parse(sys.argv[1:]).items():
             results[str(day)] = run(day, puzzles)
 
-        f = open('answers.json', 'x')
+        f = open('answers.json', 'w')
         f.write(json.dumps(results))
         f.close()
     elif sys.argv[0] in ('new', 'create'):
