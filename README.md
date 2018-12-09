@@ -6,8 +6,8 @@
 [![Pipenv](https://img.shields.io/badge/pipenv-%E2%9C%94-brightgreen.svg)](https://pipenv.readthedocs.io/en/latest/)
 ![GitHub top language](https://img.shields.io/github/languages/top/rhbvkleef/aoc-2018.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/google/skia.svg)
-[![Build Status](https://img.shields.io/teamcity/https/ci.vankleef.me/s/AdventOfCode2018_Build.svg?style=flat)](https://ci.vankleef.me/viewType.html?buildTypeId=AdventOfCode2018_Build&guest=1)
-[![Coverage](https://teamcity.vankleef.me/repository/download/AdventOfCode2018_Build/.lastSuccessful/htmlcov/coverage.svg?guest=1)](https://teamcity.vankleef.me/repository/download/AdventOfCode2018_Build/.lastSuccessful/htmlcov/index.html?guest=1)
+[![Build Status](https://img.shields.io/teamcity/https/ci.vankleef.me/s/AdventOfCode2018_Build.svg?style=flat)](https://ci.vankleef.me/viewType.html?buildTypeId=AdventOfCode2018_Build&branch_AdventOfCode2018=%3Cdefault%3E&tab=buildTypeStatusDiv)
+[![Coverage](https://teamcity.vankleef.me/repository/download/AdventOfCode2018_Build/.lastSuccessful/htmlcov/coverage.svg?guest=1&branch=master)](https://teamcity.vankleef.me/repository/download/AdventOfCode2018_Build/.lastSuccessful/htmlcov/index.html?guest=1&branch=master)
 
 ## Installation
 
