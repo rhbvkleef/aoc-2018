@@ -5,6 +5,7 @@
 # are allowed to do almost anything with it. For exact terms, please refer to
 # the attached license file.
 import datetime
+import json
 import os
 import sys
 
@@ -81,7 +82,7 @@ def run(day: int, puzzles: Tuple[int, int] = (1, 2), notfound_errors=True):
         if notfound_errors:
             print("Day {}:".format(day), file=sys.stderr)
             print("  Not found!", file=sys.stderr)
-        return False
+        return None
     else:
         print("Day {}:".format(day), file=sys.stderr)
 
@@ -95,19 +96,23 @@ def run(day: int, puzzles: Tuple[int, int] = (1, 2), notfound_errors=True):
             buffer = StringIO()
             traceback.print_exc(file=buffer)
             print("      " + ("\n      ".join(buffer.getvalue().split("\n"))), file=sys.stderr)
+            return {'success': False, 'error': e.__str__()}
         else:
             print("    Solution: {}".format(result), file=sys.stderr)
             print("    Duration: {} ms".format((end-start) * 1000), file=sys.stderr)
+            return {'result': result, 'duration': (end-start) * 1000, 'success': True}
+
+    result = {}
 
     if 1 in puzzles:
         print("  Part 1:", file=sys.stderr)
-        run_case(solution.part1)
+        result['1'] = run_case(solution.part1)
 
     if 2 in puzzles:
         print("  Part 2:", file=sys.stderr)
-        run_case(solution.part2)
+        result['2'] = run_case(solution.part2)
 
-    return True
+    return result
 
 
 def new(day: int, show_error=True):
@@ -204,14 +209,24 @@ def main():
                 traceback.print_exc()
 
         passes = run_tests(should_execute)
+        results = {}
         for day, puzzles in passes.items():
-            run(day, puzzles)
+            results[str(day)] = run(day, puzzles)
+
+        f = open('answers.json', 'x')
+        f.write(json.dumps(results))
+        f.close()
 
         return
 
     if sys.argv[0] in ('run', 'execute'):
+        results = {}
         for day, puzzles in parse(sys.argv[1:]).items():
-            run(day, puzzles)
+            results[str(day)] = run(day, puzzles)
+
+        f = open('answers.json', 'x')
+        f.write(json.dumps(results))
+        f.close()
     elif sys.argv[0] in ('new', 'create'):
         for day, puzzles in parse(sys.argv[1:]).items():
             new(day)
