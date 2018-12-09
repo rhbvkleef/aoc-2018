@@ -257,13 +257,13 @@ class AutoToday(unittest.TestSuite):
 
         passes = (1, 2)
 
-        for failure in result.failures:
-            if '1' in failure[0]._testMethodName:
+        for failure in result.failed_tests:
+            if failure.endswith('1'):
                 if passes == (1, 2):
                     passes = (2, )
                 else:
                     passes = ()
-            elif '2' in failure[0]._testMethodName:
+            elif failure.endswith('2'):
                 if passes == (1, 2):
                     passes = (1, )
                 else:
@@ -280,7 +280,6 @@ class AutoToday(unittest.TestSuite):
                     passes = (1, )
                 else:
                     passes = ()
-            pass
 
         print()
         run(self.day, passes)

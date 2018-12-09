@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 requests = "*"
 coverage = "*"
+blist = "*"
 
 [dev-packages]
 teamcity-messages = "*"
