@@ -4,6 +4,11 @@
     <title>AoC 2018 result report</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        pre {
+            margin: 0;
+        }
+    </style>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/canvasjs.min.js"></script>
@@ -36,7 +41,7 @@
         				return;
 					}
 
-        			entry = {};
+        			var entry = {};
 
         			if (result["1"] && result["1"].success) {
 						durations_1.push({y: result["1"].duration, label: day});
@@ -73,10 +78,18 @@
             	raw.appendChild(a_raw);
             	el.appendChild(raw);
             	var p1 = document.createElement("td");
-            	p1.appendChild(document.createTextNode(r["1"]));
+            	var p1_p = document.createElement("pre");
+            	var p1_c = document.createElement("code");
+                p1.appendChild(p1_p);
+            	p1_p.appendChild(p1_c);
+            	p1_c.appendChild(document.createTextNode(r["1"]));
             	el.appendChild(p1);
 				var p2 = document.createElement("td");
-				p2.appendChild(document.createTextNode(r["2"]));
+                var p2_p = document.createElement("pre");
+                var p2_c = document.createElement("code");
+                p2.appendChild(p2_p);
+                p2_p.appendChild(p2_c);
+				p2_c.appendChild(document.createTextNode(r["2"]));
 				el.appendChild(p2);
 				tbody.appendChild(el);
             });
